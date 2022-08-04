@@ -5,7 +5,7 @@
 ### Start Application
 
 Main application class is
-`com.example.clebre_test.ClebreTestApplication`
+`com.example.roomoccupancymanager.RoomOccupancyManagerApplication`
 
 Application by default starts on `localhost:8080`
 
@@ -43,4 +43,5 @@ Provide server status
   "premiumOccupation": 3,
   "economyProfit": 167.99,
   "premiumProfit": 738.0
-  }```
+  }
+ ```
