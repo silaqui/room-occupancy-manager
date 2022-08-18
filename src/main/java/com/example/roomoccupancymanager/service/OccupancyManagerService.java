@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OccupancyManagerService {
@@ -22,28 +21,28 @@ public class OccupancyManagerService {
     }
 
     public RoomOptimizeResponseDTO getMaxProfit(RoomOptimizeRequestDTO request) {
-        Integer freeEconomyRooms = request.economyRoomCount();
-        Integer freePremiumRooms = request.premiumRoomCount();
-        Double priceThreshold = roomPriceConfig.premiumPriceThreshold();
+        var freeEconomyRooms = request.economyRoomCount();
+        var freePremiumRooms = request.premiumRoomCount();
+        var priceThreshold = roomPriceConfig.premiumPriceThreshold();
 
-        List<BigDecimal> offersForRooms = request.offersForRooms();
-        offersForRooms.sort(Collections.reverseOrder());
+        var premiumOffers = new ArrayList<BigDecimal>();
+        var economyOffers = new ArrayList<BigDecimal>();
 
-        List<BigDecimal> premiumOffers = new ArrayList<>();
-        List<BigDecimal> economyOffers = new ArrayList<>();
+        request.offersForRooms()
+                .stream()
+                .sorted(Comparator.reverseOrder())
+                .forEach(o -> {
+                    if (o.compareTo(priceThreshold) >= 0) {
+                        premiumOffers.add(o);
+                    } else {
+                        economyOffers.add(o);
+                    }
+                });
 
-        for (BigDecimal o : offersForRooms) {
-            if (o.doubleValue() >= priceThreshold) {
-                premiumOffers.add(o);
-            } else {
-                economyOffers.add(o);
-            }
-        }
-
-        Integer premiumBooked = 0;
-        Integer economyBooked = 0;
-        BigDecimal economyProfit = BigDecimal.ZERO;
-        BigDecimal premiumProfit = BigDecimal.ZERO;
+        var premiumBooked = 0;
+        var economyBooked = 0;
+        var economyProfit = BigDecimal.ZERO;
+        var premiumProfit = BigDecimal.ZERO;
 
         for (BigDecimal p : premiumOffers) {
             if (freePremiumRooms > 0) {

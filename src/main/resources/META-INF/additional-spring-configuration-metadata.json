@@ -2,7 +2,7 @@
   "properties": [
     {
       "name": "hotel.room-prices.premium-price-threshold",
-      "type": "java.lang.Double",
+      "type": "java.math.BigDecimal",
       "description": "Minimum price to get premium room."
     }
   ]

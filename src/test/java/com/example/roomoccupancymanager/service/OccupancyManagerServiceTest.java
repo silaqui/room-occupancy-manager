@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OccupancyManagerServiceTest {
 
-    private final RoomPriceConfig roomPriceConfig = new RoomPriceConfig(100.0);
+    private final RoomPriceConfig roomPriceConfig = new RoomPriceConfig(new BigDecimal(100));
     private final OccupancyManagerService tested = new OccupancyManagerService(roomPriceConfig);
 
     @Test
